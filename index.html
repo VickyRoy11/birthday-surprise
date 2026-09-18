@@ -1,0 +1,694 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ A Birthday Surprise For You ✨</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #12001f, #3b0a45, #160018);
+      color: white;
+    }
+
+    /* ---------------- PASSWORD SCREEN ---------------- */
+
+    #passwordScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle at top, #7b1fa2, transparent 40%),
+        linear-gradient(135deg, #100014, #27002d);
+      padding: 20px;
+    }
+
+    .password-box {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      padding: 40px 30px;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .password-box .emoji {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .password-box h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .password-box p {
+      color: #ddd;
+      margin-bottom: 25px;
+    }
+
+    .password-box input {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .password-box button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #ff4081, #ff80ab);
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .password-box button:hover {
+      transform: scale(1.03);
+    }
+
+    #error {
+      color: #ff8fa3;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ---------------- MAIN SITE ---------------- */
+
+    #mainSite {
+      display: none;
+      position: relative;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 70px 20px;
+      position: relative;
+    }
+
+    /* ---------------- HERO ---------------- */
+
+    .hero {
+      text-align: center;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at center, rgba(255,64,129,0.25), transparent 45%);
+    }
+
+    .small-text {
+      font-size: 16px;
+      color: #ffb6d0;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(45px, 9vw, 90px);
+      line-height: 1.05;
+      background: linear-gradient(90deg, #fff, #ff80ab, #ffd1e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s infinite alternate;
+    }
+
+    .hero h2 {
+      font-size: clamp(22px, 4vw, 38px);
+      margin-top: 20px;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin-top: 25px;
+      color: #ddd;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    .scroll {
+      margin-top: 45px;
+      color: #ff9abb;
+      animation: bounce 1.5s infinite;
+    }
+
+    /* ---------------- MESSAGE ---------------- */
+
+    .message {
+      background: rgba(0,0,0,0.15);
+    }
+
+    .message-box {
+      max-width: 800px;
+      padding: 45px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .message-box h2 {
+      font-size: 38px;
+      margin-bottom: 25px;
+      color: #ff9abb;
+    }
+
+    .message-box p {
+      font-size: 18px;
+      line-height: 2;
+      color: #eee;
+    }
+
+    /* ---------------- PHOTO ---------------- */
+
+    .photo-section {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .photo-section h2 {
+      font-size: 42px;
+      margin-bottom: 35px;
+    }
+
+    .photo-frame {
+      width: min(90vw, 400px);
+      height: min(110vw, 500px);
+      border-radius: 25px;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.4);
+      box-shadow: 0 20px 70px rgba(255,64,129,0.3);
+      transform: rotate(-2deg);
+      transition: 0.5s;
+    }
+
+    .photo-frame:hover {
+      transform: rotate(0deg) scale(1.03);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-caption {
+      margin-top: 25px;
+      color: #ffc5d8;
+      font-size: 18px;
+    }
+
+    /* ---------------- SURPRISE ---------------- */
+
+    .surprise {
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .surprise h2 {
+      font-size: 45px;
+      margin-bottom: 20px;
+    }
+
+    .surprise p {
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+
+    .surprise-btn {
+      border: none;
+      padding: 17px 35px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff4081, #c2185b);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 35px rgba(255,64,129,0.35);
+      transition: 0.3s;
+    }
+
+    .surprise-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    #hiddenMessage {
+      display: none;
+      margin-top: 35px;
+      max-width: 700px;
+      padding: 35px;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      animation: appear 1s ease;
+    }
+
+    #hiddenMessage h3 {
+      font-size: 32px;
+      color: #ff8fb5;
+      margin-bottom: 15px;
+    }
+
+    #hiddenMessage p {
+      line-height: 1.9;
+      color: #eee;
+    }
+
+    /* ---------------- FOOTER ---------------- */
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #aaa;
+      background: #100012;
+    }
+
+    /* ---------------- FLOATING HEARTS ---------------- */
+
+    .heart {
+      position: fixed;
+      bottom: -30px;
+      font-size: 20px;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+      z-index: 5;
+    }
+
+    /* ---------------- ANIMATIONS ---------------- */
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 5px rgba(255,128,171,0.3));
+      }
+
+      to {
+        filter: drop-shadow(0 0 25px rgba(255,128,171,0.8));
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------------- MOBILE ---------------- */
+
+    @media (max-width: 600px) {
+
+      .message-box {
+        padding: 30px 20px;
+      }
+
+      .message-box h2 {
+        font-size: 30px;
+      }
+
+      .message-box p {
+        font-size: 16px;
+      }
+
+      .photo-section h2,
+      .surprise h2 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= PASSWORD SCREEN ================= -->
+
+  <div id="passwordScreen">
+
+    <div class="password-box">
+
+      <div class="emoji">🎁</div>
+
+      <h1>A Little Surprise</h1>
+
+      <p>This page is only for someone special ❤️</p>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter the secret password"
+      >
+
+      <button onclick="unlock()">Open My Surprise 💖</button>
+
+      <div id="error">
+        Hmm... that's not the password 😅
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= MAIN WEBSITE ================= -->
+
+  <div id="mainSite">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="small-text">
+        A special day for a special person
+      </div>
+
+      <h1>Happy Birthday 🎂</h1>
+
+      <h2>My Favorite Person ❤️</h2>
+
+      <p>
+        Today isn't just another day.
+        Today is the day someone incredibly special
+        came into this world.
+      </p>
+
+      <div class="scroll">
+        ↓ Scroll down for your surprise ↓
+      </div>
+
+    </section>
+
+
+    <!-- MESSAGE -->
+
+    <section class="message">
+
+      <div class="message-box">
+
+        <h2>For You 💌</h2>
+
+        <p>
+          On your birthday, I just want you to know how special
+          you are to me. Your smile, your presence, your little
+          habits and even the smallest moments we share mean more
+          to me than I can explain.
+
+          <br><br>
+
+          I hope this new year of your life brings you countless
+          reasons to smile, beautiful memories, success in
+          everything you do and all the happiness you deserve.
+
+          <br><br>
+
+          Keep smiling, keep shining and never forget that
+          someone is always wishing the very best for you.
+
+          <br><br>
+
+          ❤️ Happy Birthday, beautiful. ❤️
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- PHOTO -->
+
+    <section class="photo-section">
+
+      <h2>A Memory With You 📸</h2>
+
+      <div class="photo-frame">
+
+        <!--
+          Replace "her-photo.jpg" with your actual photo filename.
+          Example:
+          <img src="photo.jpg">
+        -->
+
+        <img src="her-photo.jpg" alt="A beautiful memory">
+
+      </div>
+
+      <div class="photo-caption">
+        Some memories deserve to stay forever. ❤️
+      </div>
+
+    </section>
+
+
+    <!-- SURPRISE -->
+
+    <section class="surprise">
+
+      <h2>Wait... There's More 🎁</h2>
+
+      <p>
+        You haven't seen the actual surprise yet.
+      </p>
+
+      <button class="surprise-btn" onclick="showSurprise()">
+        Click Here ❤️
+      </button>
+
+
+      <div id="hiddenMessage">
+
+        <h3>One Last Thing... 💖</h3>
+
+        <p>
+          If I could give you one thing today, it would be the
+          ability to see yourself through my eyes.
+
+          <br><br>
+
+          Maybe then you would understand just how precious
+          you really are.
+
+          <br><br>
+
+          No matter where life takes us, I hope you always
+          remember this birthday and this little surprise.
+
+          <br><br>
+
+          Happy Birthday once again. 🎂❤️
+
+          <br><br>
+
+          <strong>
+            You deserve all the beautiful things in this world.
+          </strong>
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+      Made with ❤️ especially for you
+    </footer>
+
+  </div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    /*
+      ==========================================
+      CHANGE YOUR PASSWORD HERE
+      ==========================================
+    */
+
+    const correctPassword = "birthday";
+
+
+    function unlock() {
+
+      const enteredPassword =
+        document.getElementById("password").value;
+
+      const error =
+        document.getElementById("error");
+
+      if (enteredPassword === correctPassword) {
+
+        document.getElementById("passwordScreen").style.display = "none";
+
+        document.getElementById("mainSite").style.display = "block";
+
+        startHearts();
+
+      } else {
+
+        error.style.display = "block";
+
+      }
+
+    }
+
+
+    /*
+      Allow pressing ENTER
+    */
+
+    document.getElementById("password").addEventListener("keypress", function(event) {
+
+      if (event.key === "Enter") {
+        unlock();
+      }
+
+    });
+
+
+    /*
+      ==========================================
+      SURPRISE BUTTON
+      ==========================================
+    */
+
+    function showSurprise() {
+
+      const message =
+        document.getElementById("hiddenMessage");
+
+      message.style.display = "block";
+
+      createHeartExplosion();
+
+      message.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+
+    /*
+      ==========================================
+      FLOATING HEARTS
+      ==========================================
+    */
+
+    function createHeart() {
+
+      const heart =
+        document.createElement("div");
+
+      heart.classList.add("heart");
+
+      const hearts = ["❤️", "💕", "💗", "💖", "💘"];
+
+      heart.innerHTML =
+        hearts[Math.floor(Math.random() * hearts.length)];
+
+      heart.style.left =
+        Math.random() * 100 + "vw";
+
+      heart.style.fontSize =
+        (15 + Math.random() * 25) + "px";
+
+      heart.style.animationDuration =
+        (4 + Math.random() * 5) + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 9000);
+
+    }
+
+
+    function startHearts() {
+
+      setInterval(createHeart, 700);
+
+    }
+
+
+    /*
+      ==========================================
+      HEART EXPLOSION
+      ==========================================
+    */
+
+    function createHeartExplosion() {
+
+      for (let i = 0; i < 35; i++) {
+
+        setTimeout(() => {
+          createHeart();
+        }, i * 80);
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
+```
