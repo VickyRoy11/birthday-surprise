@@ -4,8 +4,8 @@
   GitHub repository will be public.
 */
 const birthdayConfig = {
-  partnerName: "Diya",
-  yourName: "Rahul",
+  partnerName: "Pakhi",
+  yourName: "Your Bbe",
   secretCode: "29012026", // Change this before publishing.
   musicFile: "assets/music/birthday-song.mp3",
   finalMessage:
